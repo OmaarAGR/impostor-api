@@ -105,10 +105,11 @@ public class RoomController {
         Assignment a = roomRepo.findAssignment(playerId)
                 .orElseThrow(() -> new RuntimeException("No hay asignacion (¿ya iniciaste?)"));
 
-        return Map.of(
-                "role", a.getRole(),
-                "word", a.getWord()
-        );
+        // Fix: usar HashMap en lugar de Map.of() para soportar values null (impostor tiene word=null)
+        Map<String, Object> response = new HashMap<>();
+        response.put("role", a.getRole());
+        response.put("word", a.getWord());
+        return response;
     }
 
     @PostMapping("/{code}/votes")
@@ -148,13 +149,14 @@ public class RoomController {
                     })
                     .toList();
 
-            return Map.of(
-                    "roundClosed", room.getCurrentRound(),
-                    "status", room.getStatus(),
-                    "winner", room.getWinner(),
-                    "secretWord", room.getSecretWord(),
-                    "reveal", reveal
-            );
+            // Fix: usar HashMap para soportar posibles values null en winner o secretWord
+            Map<String, Object> response = new HashMap<>();
+            response.put("roundClosed", room.getCurrentRound());
+            response.put("status", room.getStatus());
+            response.put("winner", room.getWinner());
+            response.put("secretWord", room.getSecretWord());
+            response.put("reveal", reveal);
+            return response;
         }
 
         long aliveCount = room.getPlayers().stream().filter(Player::isAlive).count();
