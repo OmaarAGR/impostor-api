@@ -105,7 +105,6 @@ public class RoomController {
         Assignment a = roomRepo.findAssignment(playerId)
                 .orElseThrow(() -> new RuntimeException("No hay asignacion (¿ya iniciaste?)"));
 
-        // Fix: usar HashMap en lugar de Map.of() para soportar values null (impostor tiene word=null)
         Map<String, Object> response = new HashMap<>();
         response.put("role", a.getRole());
         response.put("word", a.getWord());
@@ -149,7 +148,6 @@ public class RoomController {
                     })
                     .toList();
 
-            // Fix: usar HashMap para soportar posibles values null en winner o secretWord
             Map<String, Object> response = new HashMap<>();
             response.put("roundClosed", room.getCurrentRound());
             response.put("status", room.getStatus());
