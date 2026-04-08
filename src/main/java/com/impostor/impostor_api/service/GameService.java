@@ -64,7 +64,7 @@ public class GameService {
                 .orElseThrow(() -> new RuntimeException("Sala no existe"));
 
         if (room.getStatus() != RoomStatus.IN_GAME)
-            throw new RuntimeException("No se puede votar: sala no esta en IN_GAME");
+            throw new RuntimeException("No se puede votar: no esta en IN_GAME");
 
         if (votedId == null) throw new RuntimeException("votedId es obligatorio");
 
